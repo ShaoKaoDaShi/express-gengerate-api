@@ -8,14 +8,14 @@ router.post('/', function (req, res, next) {
   // res.cookie('access_token', 'hahaha')
 
   if (username === 'vue') {
-    return res.send({ menuList: [store.vue] })
+    return res.send({ menuList: [store.vue, store.rrweb, store.main] })
   }
   if (username === 'react') {
-    return res.send({ menuList: [store.react] })
+    return res.send({ menuList: [store.react, store.rrweb] })
   }
 
   if (username === 'admin') {
-    return res.send({ menuList: [store.react, store.vue] })
+    return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main] })
   }
   res.send({menuList:[]})
 })
