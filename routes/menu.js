@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
   }
 
   if (username === 'admin') {
-    return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main] })
+    return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
   }
   res.send({ menuList: [] })
 })

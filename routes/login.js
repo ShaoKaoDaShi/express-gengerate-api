@@ -4,7 +4,7 @@ var store = require('../store')
 /* GET users listing. */
 router.post('/', function (req, res, next) {
   const { username } = req.body || {}
-  res.cookie('access_token', 'hahaha').cookie("username", username)
+  res.cookie('access_token', 'hahaha').cookie('username', username)
   // res.cookie('access_token', 'hahaha')
 
   if (username === 'vue') {
@@ -15,9 +15,9 @@ router.post('/', function (req, res, next) {
   }
 
   if (username === 'admin') {
-    return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main] })
+    return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
   }
-  res.send({menuList:[]})
+  res.send({ menuList: [] })
 })
 
 module.exports = router

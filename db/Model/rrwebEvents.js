@@ -11,7 +11,7 @@ const { Schema } = mongoose
 */
 const rrwebEventsSchema = new Schema({
   errorInfo: Object,
-  events:Array
+  events: Array,
 })
 // [{
 //   type: Number,
