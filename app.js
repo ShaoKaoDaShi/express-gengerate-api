@@ -4,6 +4,7 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
+var jwt = require('jsonwebtoken')
 
 var indexRouter = require('./routes/index')
 var usersRouter = require('./routes/users')
@@ -23,17 +24,35 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(function (req, res, next) {
-  if (req.url === '/login') {
+  if (req.url === '/user/register' || req.url === '/user/login') {
     return next()
   }
-  if (req.headers.authorization === '' || req.headers.authorization === undefined) {
-    throw new Error('request authorization')
-  }
-  next()
+  const token = req.headers.authorization
+  console.log(token)
+  jwt.verify(token, 'gigibo', function (err, decoded) {
+    if (err) {
+      /*
+        err = {
+          name: 'TokenExpiredError',
+          message: 'jwt expired',
+          expiredAt: 1408621000
+        }
+      */
+      if (err.name === 'TokenExpiredError') {
+        const newToken = jwt.sign(decoded, 'gigibo', { expiresIn: '1h' })
+        res.cookie('Authorization', newToken).cookie('access_token', newToken)
+        next()
+      } else {
+        console.log(err)
+        throw new Error(err)
+      }
+    }
+    next()
+  })
 })
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/user', usersRouter)
 app.use('/login', loginRouter)
 app.use('/menuList', menuListRouter)
 app.use('/rrweb', rrwebEvents)

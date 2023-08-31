@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
     unique: true,
   },
   token: String,
+  id:String,
+  password: String,
 })
 
 const User = mongoose.model('User', userSchema)
 
-export default User
+module.exports = User
