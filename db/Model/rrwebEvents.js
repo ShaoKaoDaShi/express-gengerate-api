@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 /*
-  errorType: String
-  errorAddress: String
+errorInfo: { message: e.message, stack: e.error.stack },
   events:{
     type: Number,
     data: Object,
@@ -10,8 +9,13 @@ const { Schema } = mongoose
   }
 */
 const rrwebEventsSchema = new Schema({
+  projectId: String,
   errorInfo: Object,
   events: Array,
+  isDeal: {
+    type:String,
+    default:false,
+  },
 })
 // [{
 //   type: Number,

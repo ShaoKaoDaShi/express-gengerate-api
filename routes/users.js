@@ -11,8 +11,10 @@ router
     const users = await User.find({ username, password })
     if (users.length) {
       const { username, password, id } = users[0]
-      var token = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 60 * 60 })
+      var token = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 6 })
       res.cookie('access_token', token)
+      res.cookie("userId",id)
+      res.cookie("username",username)
       return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
     } else {
       res.send({ errMsg: '用户名或密码错误' })
@@ -26,8 +28,10 @@ router
       res.send({ errMsg: '用户名已存在' })
     } else {
       const userInfo = { username, password, id: userId }
-      var token = jwt.sign(userInfo, 'gigibo', { expiresIn: 60 * 60 })
+      var token = jwt.sign(userInfo, 'gigibo', { expiresIn: 6 })
       res.cookie('access_token', token)
+      res.cookie("userId",userId)
+      res.cookie("username",username)
       User.insertMany({ ...userInfo })
       return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
     }
