@@ -11,7 +11,8 @@ var indexRouter = require('./routes/index')
 var usersRouter = require('./routes/users')
 var loginRouter = require('./routes/login')
 var menuListRouter = require('./routes/menu')
-var rrwebEvents = require('./routes/rrwebEvents.js')
+var rrwebEvents = require('./routes/rrwebEvents')
+var rrwebProjects = require('./routes/rrwebProjects')
 
 var User = require('./db/Model/user')
 
@@ -54,8 +55,8 @@ app.use(async function (req, res, next) {
       //过期解析不出来
       // console.log("decoded"+ decoded)
       console.log('decoded err' + err)
-      const users = await User.find({ username: cookies.username })
-      const { username, password, id } = users[0]
+      const user = await User.findOne({ username: cookies.username })
+      const { username, password, id } = user
       const newToken = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 6 })
       res.cookie('access_token', newToken)
       next()
@@ -71,6 +72,7 @@ app.use('/user', usersRouter)
 app.use('/login', loginRouter)
 app.use('/menuList', menuListRouter)
 app.use('/rrweb', rrwebEvents)
+app.use('/rrwebProjects',rrwebProjects)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

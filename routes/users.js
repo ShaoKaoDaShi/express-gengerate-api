@@ -28,11 +28,12 @@ router
       res.send({ errMsg: '用户名已存在' })
     } else {
       const userInfo = { username, password, id: userId }
+      console.log("userInfo", userInfo)
       var token = jwt.sign(userInfo, 'gigibo', { expiresIn: 6 })
       res.cookie('access_token', token)
       res.cookie("userId",userId)
       res.cookie("username",username)
-      User.insertMany({ ...userInfo })
+      await User.insertMany(userInfo)
       return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
     }
   })

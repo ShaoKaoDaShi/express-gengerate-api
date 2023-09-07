@@ -25,11 +25,11 @@ router.post('/get', async function (req, res, next) {
   const { projectName } = req.body
   const project = await RrwebProject.findOne({ projectName })
   const values = await RrwebEvents.find({ projectId: project.projectId })
-  values.forEach((value) => {
-    delete value.events
-    value.timestamp = value.events.pop().timestamp
+  const results = values.map(({ events, isDeal, errorInfo, projectId }) => {
+    const timestamp = events.pop().timestamp
+    return { isDeal, errorInfo, projectId, timestamp }
   })
-  res.send(values)
+  res.send(results)
 })
 
 router.post('/getEventsFromErrors', async function (req, res, next) {
