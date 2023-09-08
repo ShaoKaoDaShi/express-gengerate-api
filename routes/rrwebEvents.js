@@ -7,8 +7,7 @@ const RrwebProject = require('../db/Model/rrwebProject')
 /* GET home page. */
 router.post('/save', async function (req, res, next) {
   const error = req.body
-
-  const project = await RrwebProject.findOne({ projectName })
+  const project = await RrwebProject.findOne({ projectName: error.projectName })
   error.projectId = project.projectId
   RrwebEvents.insertMany(error)
   axios.post('https://oapi.dingtalk.com/robot/send?access_token=a6b6ca5fb0456352000d565b90b4d23c7871b0df92a37136751d8933f6de98d1', {
@@ -17,19 +16,14 @@ router.post('/save', async function (req, res, next) {
       content: '监控报警: ' + error.errorInfo.message,
     },
   })
-
-  res.send({ ok: true })
+  req.headers.res.send({ ok: true })
 })
 
 router.post('/get', async function (req, res, next) {
   const { projectName } = req.body
   const project = await RrwebProject.findOne({ projectName })
-  const values = await RrwebEvents.find({ projectId: project.projectId })
-  const results = values.map(({ events, isDeal, errorInfo, projectId }) => {
-    const timestamp = events.pop().timestamp
-    return { isDeal, errorInfo, projectId, timestamp }
-  })
-  res.send(results)
+  const values = await RrwebEvents.find({ projectId: project.projectId }).select('-events')
+  res.send(values)
 })
 
 router.post('/getEventsFromErrors', async function (req, res, next) {
@@ -40,7 +34,6 @@ router.post('/getEventsFromErrors', async function (req, res, next) {
   console.log(results)
   if (results.length < 1) return res.send()
   const value = results[results.length - 1]
-  value.timestamp = value.events.pop().timestamp
   res.send(value)
 })
 

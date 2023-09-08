@@ -15,7 +15,7 @@ router
       res.cookie('access_token', token)
       res.cookie("userId",id)
       res.cookie("username",username)
-      return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
+      return res.send('ok')
     } else {
       res.send({ errMsg: '用户名或密码错误' })
     }
@@ -34,7 +34,7 @@ router
       res.cookie("userId",userId)
       res.cookie("username",username)
       await User.insertMany(userInfo)
-      return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard] })
+      return res.send('ok')
     }
   })
 

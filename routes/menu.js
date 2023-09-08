@@ -8,10 +8,10 @@ router.post('/', function (req, res, next) {
   }
   const { username } = req.body || {}
   if (username === 'vue') {
-    return res.send({ menuList: [store.vue, store.rrweb, store.main] })
+    return res.send({ menuList: [store.vue, store.rrweb, store.main, store.errorDashboard] })
   }
   if (username === 'react') {
-    return res.send({ menuList: [store.react, store.rrweb] })
+    return res.send({ menuList: [store.react, store.rrweb, store.errorDashboard] })
   }
 
   if (username === 'admin') {

@@ -12,9 +12,10 @@ const rrwebEventsSchema = new Schema({
   projectId: String,
   errorInfo: Object,
   events: Array,
+  timestamp: Number,
   isDeal: {
-    type:String,
-    default:false,
+    type: String,
+    default: false,
   },
 })
 // [{
