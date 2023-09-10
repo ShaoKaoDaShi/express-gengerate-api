@@ -16,7 +16,7 @@ router.post('/save', async function (req, res, next) {
       content: '监控报警: ' + error.errorInfo.message,
     },
   })
-  req.headers.res.send({ ok: true })
+  res.send({ ok: true })
 })
 
 router.post('/get', async function (req, res, next) {

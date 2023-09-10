@@ -8,9 +8,18 @@ errorInfo: { message: e.message, stack: e.error.stack },
     timestamp:Number
   }
 */
+const errorInfoSchema = new Schema({
+  message: String,
+  stack: String,
+})
+const eventSchema = new Schema({
+  type: Number,
+  data: Object,
+  timestamp: Number,
+})
 const rrwebEventsSchema = new Schema({
   projectId: String,
-  errorInfo: Object,
+  errorInfo: errorInfoSchema,
   events: Array,
   timestamp: Number,
   isDeal: {
