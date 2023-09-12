@@ -41,10 +41,10 @@ async function decodeErrorStack(stack) {
   return parsedStack
 }
 
-// TODO 通过不同的项目id进行 error信息存储
+// TODO 通过不同的项目id进行 error信息存储，如果stack存在并且 status已经解决，那么
 router.post('/save', async function (req, res, next) {
   const error = req.body
-  const project = await RrwebProject.findOne({ projectName: error.projectName })
+  const project = await RrwebProject.findOne({ projectId: error.projectId })
   error.projectId = project.projectId
   // 还原成源文件的error位置
   const parsedStack = await decodeErrorStack(error.errorInfo.stack)
@@ -62,9 +62,8 @@ router.post('/save', async function (req, res, next) {
 })
 
 router.post('/get', async function (req, res, next) {
-  const { projectName } = req.body
-  const project = await RrwebProject.findOne({ projectName })
-  const values = await RrwebEvents.find({ projectId: project.projectId }).select('-events')
+  const { projectId } = req.body
+  const values = await RrwebEvents.find({ projectId }).select('-events')
   res.send(values)
 })
 

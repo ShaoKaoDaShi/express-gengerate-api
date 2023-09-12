@@ -128,20 +128,20 @@
 
 // 3.背包最大值问题
 
-function fn3(weight, value, backWeight) {
-  const m = weight.length
-  const n = backWeight
-  const result = Array(m)
-    .fill([])
-    .map(() => Array(n).fill(0))
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      if(weight[i] <= j){
-        if(result[i][j] === 0) result[i][j] = value[i]
-        result[i][j] = Math.max(result[i - 1][j], result[i][j -1] + value)
-      }
-      result[i][j] =
-    }
-  }
-  return result[0][0]
-}
+// function fn3(weight, value, backWeight) {
+//   const m = weight.length
+//   const n = backWeight
+//   const result = Array(m)
+//     .fill([])
+//     .map(() => Array(n).fill(0))
+//   for (let i = 0; i < m; i++) {
+//     for (let j = 0; j < n; j++) {
+//       if(weight[i] <= j){
+//         if(result[i][j] === 0) result[i][j] = value[i]
+//         result[i][j] = Math.max(result[i - 1][j], result[i][j -1] + value)
+//       }
+//       result[i][j] =
+//     }
+//   }
+//   return result[0][0]
+// }
