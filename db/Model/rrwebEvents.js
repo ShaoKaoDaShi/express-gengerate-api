@@ -9,23 +9,23 @@ errorInfo: { message: e.message, stack: e.error.stack },
   }
 */
 const errorInfoSchema = new Schema({
-  message: String,
-  stack: String,
+    message: String,
+    stack: String,
 })
 const eventSchema = new Schema({
-  type: Number,
-  data: Object,
-  timestamp: Number,
+    type: Number,
+    data: Object,
+    timestamp: Number,
 })
 const rrwebEventsSchema = new Schema({
-  projectId: String,
-  errorInfo: errorInfoSchema,
-  events: Array,
-  timestamp: Number,
-  isDeal: {
-    type: String,
-    default: false,
-  },
+    projectId: String,
+    errorInfo: errorInfoSchema,
+    events: Array,
+    timestamp: Number,
+    isDeal: {
+        type: Boolean,
+        default: false,
+    },
 })
 // [{
 //   type: Number,
