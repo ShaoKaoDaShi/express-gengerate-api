@@ -23,21 +23,19 @@ router.post('/getAll', async function (req, res, next) {
 })
 
 router.post('/addOne', async function (req, res, next) {
-    const { projectName, url, userId } = req.body
-    await RrwebProject.insertMany({ projectName: projectName, projectId: v4(), dingDingBot: { url }, userId })
+    const { projectName, url, userId, keyword } = req.body
+    await RrwebProject.insertMany({ projectName: projectName, projectId: v4(), dingDingBot: { url, keyword }, userId })
     res.send({ status: 'ok' })
 })
 
 router.post('/updateOne', async function (req, res, next) {
-    const { projectName, url, projectId } = req.body
-    const result = await RrwebProject.updateOne({ projectId: projectId }, { projectName: projectName, dingDingBot: { url } })
+    const { projectName, url, projectId, keyword } = req.body
+    const result = await RrwebProject.updateOne({ projectId: projectId }, { projectName: projectName, dingDingBot: { url, keyword } })
     res.send({ status: 'ok' })
 })
 
 router.post('/uploadSourceMap', upload.single('file'), async function (req, res, next) {
     console.log('upload')
-    console.log('ok')
-    // const result = await RrwebProject.updateOne({ projectId: projectId }, { projectName: projectName, dingDingBot: { url } })
     res.send({ status: 'ok' })
 })
 

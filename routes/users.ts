@@ -11,7 +11,7 @@ router
         const users = await User.find({ username, password })
         if (users.length) {
             const { username, password, id } = users[0]
-            var token = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 6 })
+            var token = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 60 * 60 * 24 * 7 })
             res.cookie('access_token', token)
             res.cookie('userId', id)
             res.cookie('username', username)
@@ -29,7 +29,7 @@ router
         } else {
             const userInfo = { username, password, id: userId }
             console.log('userInfo', userInfo)
-            var token = jwt.sign(userInfo, 'gigibo', { expiresIn: 6 })
+            var token = jwt.sign(userInfo, 'gigibo', { expiresIn: 60 * 60 * 24 * 7 })
             res.cookie('access_token', token)
             res.cookie('userId', userId)
             res.cookie('username', username)

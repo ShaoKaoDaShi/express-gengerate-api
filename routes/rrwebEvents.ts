@@ -56,12 +56,20 @@ router.post('/save', async function (req, res, next) {
         RrwebEvents.insertMany(error)
         // 发送钉钉通知
         // TODO 限制发送频率 同一个errorstack只发送一次，不同的stack同一个钉钉通知，1分钟只能发送19次，
-        axios.post('https://oapi.dingtalk.com/robot/send?access_token=a6b6ca5fb0456352000d565b90b4d23c7871b0df92a37136751d8933f6de98d1', {
-            msgtype: 'text',
-            text: {
-                content: '监控报警: ' + error.errorInfo.stack,
-            },
-        })
+        // axios.post('https://oapi.dingtalk.com/robot/send?access_token=a6b6ca5fb0456352000d565b90b4d23c7871b0df92a37136751d8933f6de98d1', {
+        //     msgtype: 'text',
+        //     text: {
+        //         content: '监控报警: ' + error.errorInfo.stack,
+        //     },
+        // })
+        if (project.dingDingBot && project.dingDingBot.url) {
+            axios.post(project.dingDingBot?.url, {
+                msgtype: 'text',
+                text: {
+                    content: project.dingDingBot.keyword + ': ' + error.errorInfo.stack,
+                },
+            })
+        }
     }
 
     res.send({ ok: true })

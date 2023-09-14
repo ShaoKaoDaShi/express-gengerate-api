@@ -12,7 +12,6 @@ interface CustomError extends Error {
 
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
-import loginRouter from './routes/login'
 import menuListRouter from './routes/menu'
 import rrwebEvents from './routes/rrwebEvents'
 import rrwebProjects from './routes/rrwebProjects'
@@ -42,12 +41,12 @@ app.use(async function (req, res, next) {
                 if (err) {
                     reject(err)
                     /*
-            err = {
-              name: 'TokenExpiredError',
-              message: 'jwt expired',
-              expiredAt: 1408621000
-            }
-          */
+                        err = {
+                          name: 'TokenExpiredError',
+                          message: 'jwt expired',
+                          expiredAt: 1408621000
+                        }
+                    */
                 }
                 resolve(decoded)
             })
@@ -61,7 +60,7 @@ app.use(async function (req, res, next) {
             const user = await User.findOne({ username: cookies.username })
             if (user) {
                 const { username, password, id } = user
-                const newToken = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 6 })
+                const newToken = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 60 * 60 * 24 * 7 })
                 res.cookie('access_token', newToken)
             }
             next()
@@ -74,7 +73,6 @@ app.use(async function (req, res, next) {
 
 app.use('/', indexRouter)
 app.use('/user', usersRouter)
-app.use('/login', loginRouter)
 app.use('/menuList', menuListRouter)
 app.use('/rrweb', rrwebEvents)
 app.use('/rrwebProjects', rrwebProjects)

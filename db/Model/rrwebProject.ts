@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
-const dingDingBot = new Schema({ url: String })
+const dingDingBot = new Schema({ url: String, keyword: String })
 const rrwebProjectSchema = new Schema({
     projectId: String,
     projectName: {
