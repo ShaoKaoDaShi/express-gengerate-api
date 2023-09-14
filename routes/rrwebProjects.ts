@@ -1,8 +1,8 @@
-var express = require('express')
+import express from 'express'
 var router = express.Router()
-var RrwebProject = require('../db/Model/rrwebProject')
-var { v4 } = require('uuid')
-const multer = require('multer')
+import RrwebProject from '../db/Model/rrwebProject'
+import { v4 } from 'uuid'
+import multer from 'multer'
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -41,4 +41,4 @@ router.post('/uploadSourceMap', upload.single('file'), async function (req, res,
     res.send({ status: 'ok' })
 })
 
-module.exports = router
+export default router

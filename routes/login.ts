@@ -1,6 +1,6 @@
-var express = require('express')
+import express from 'express'
 var router = express.Router()
-var store = require('../store')
+import store from '../store'
 /* GET users listing. */
 router.post('/', function (req, res, next) {
     const { username } = req.body || {}
@@ -17,4 +17,4 @@ router.post('/', function (req, res, next) {
     res.send({ menuList: [] })
 })
 
-module.exports = router
+export default router

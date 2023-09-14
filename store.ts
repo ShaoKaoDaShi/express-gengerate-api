@@ -6,4 +6,4 @@ const store = {
     errorDashboard: { key: 'errorDashboard' },
     uploadSourceMap: { key: 'uploadSourceMap' },
 }
-module.exports = store
+export default store

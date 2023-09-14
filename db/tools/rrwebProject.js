@@ -1,6 +1,6 @@
 require('../index')
 var RrwebProject = require('../Model/rrwebProject')
-var { v4 } = require('uuid')
+import { v4 } from 'uuid'
 // RrwebProject.insertMany({
 //   projectId: v4(),
 //   projectName: 'qiankun-base',

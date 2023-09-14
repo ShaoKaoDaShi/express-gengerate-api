@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const { Schema } = mongoose
 /*
 errorInfo: { message: e.message, stack: e.error.stack },
@@ -33,5 +33,4 @@ const rrwebEventsSchema = new Schema({
 //   timestamp: Number,
 // }]
 const RrwebEvents = mongoose.model('RrwebEvents', rrwebEventsSchema)
-
-module.exports = RrwebEvents
+export default RrwebEvents
