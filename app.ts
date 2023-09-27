@@ -1,11 +1,10 @@
-import dbConnect from './db'
 import createError from 'http-errors'
 import express, { Request, Response, NextFunction } from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import jwt, { VerifyErrors } from 'jsonwebtoken'
-
+import jwt from './jwt'
+import dbConnect from './db'
 interface CustomError extends Error {
     status?: number
 }
@@ -30,45 +29,22 @@ app.use(express.json({ limit: '2mb' }))
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+// bun 不支持 jwt，jwt是基于node:crypto 实现的
 app.use(async function (req, res, next) {
     if (req.url === '/user/register' || req.url === '/user/login') {
         return next()
     }
     const cookies = req.cookies as Record<string, string>
-    try {
-        await new Promise((resolve, reject) => {
-            jwt.verify(cookies['access_token'], 'gigibo', function (err, decoded) {
-                if (err) {
-                    reject(err)
-                    /*
-                        err = {
-                          name: 'TokenExpiredError',
-                          message: 'jwt expired',
-                          expiredAt: 1408621000
-                        }
-                    */
-                }
-                resolve(decoded)
-            })
-        })
-        next()
-    } catch (err: any) {
-        if (err.name === 'TokenExpiredError') {
-            //过期解析不出来
-            // console.log("decoded"+ decoded)
-            console.log('decoded err' + err)
-            const user = await User.findOne({ username: cookies.username })
-            if (user) {
-                const { username, password, id } = user
-                const newToken = jwt.sign({ username, password, id }, 'gigibo', { expiresIn: 60 * 60 * 24 * 7 })
-                res.cookie('access_token', newToken)
-            }
-            next()
-        } else {
-            console.log(err)
-            throw new Error(err)
+    const decodePayload = jwt.verifyToken(cookies['access_token'])
+    if (decodePayload === false) {
+        const user = await User.findOne({ username: cookies.username })
+        if (user) {
+            const { username, password, id } = user
+            const newToken = jwt.generateToken({ username, password, id }, 60 * 60 * 24 * 7 * 1000)
+            res.cookie('access_token', newToken)
         }
     }
+    next()
 })
 
 app.use('/', indexRouter)
@@ -103,4 +79,4 @@ async function main() {
 
 main()
 
-module.exports = app
+// module.exports = app
