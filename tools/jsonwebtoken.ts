@@ -92,6 +92,7 @@ class JsonWebToken {
     }
 
     verifyToken(token: string) {
+        if (token === null || token === undefined) return false
         const [header, payload, expirationTimestamp, signature] = token.split('.')
         const calculatedSignature = CryptoJS.HmacSHA256(`${header}.${payload}.${expirationTimestamp}`, this.secretKey).toString(CryptoJS.enc.Base64)
 
