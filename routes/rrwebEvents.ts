@@ -8,10 +8,11 @@ import RrwebEvents from '../db/Model/rrwebEvents'
 import RrwebProject from '../db/Model/rrwebProject'
 
 async function decodeErrorStack(stack: string) {
-    const stackList = stack.split('\n').map((item) => {
+    const stackList = stack?.split('\n').map((item) => {
         const result = item.trim().replace(')', '').split('/')
         return result.pop() || ''
     })
+    if (stackList?.length < 2) return stack
     const [filename, line, column] = stackList[1].split(':')
     // 读取对应的sourcemap
     let rawSourceMap = null
@@ -51,8 +52,11 @@ router.post('/save', async function (req, res, next) {
     if (project) {
         error.projectId = project.projectId
         // 还原成源文件的error位置
-        const parsedStack = await decodeErrorStack(error.errorInfo.stack)
-        error.errorInfo.stack = parsedStack
+        if (error.errorInfo.stack !== null && error.errorInfo.stack !== undefined) {
+            const parsedStack = await decodeErrorStack(error.errorInfo.stack)
+            error.errorInfo.stack = parsedStack
+        }
+
         RrwebEvents.insertMany(error)
         // 发送钉钉通知
         // TODO 限制发送频率 同一个errorstack只发送一次，不同的stack同一个钉钉通知，1分钟只能发送19次，

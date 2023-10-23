@@ -5,5 +5,6 @@ const store = {
     rrweb: { key: 'errorListenProjectList' },
     errorDashboard: { key: 'errorDashboard' },
     uploadSourceMap: { key: 'uploadSourceMap' },
+    lowCodeEditor: { key: 'lowCodeEditor' },
 }
 export default store

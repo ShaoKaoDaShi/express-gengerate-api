@@ -15,7 +15,14 @@ router.post('/', function (req, res, next) {
     }
 
     if (username === 'admin') {
-        return res.send({ menuList: [store.react, store.vue, store.rrweb, store.main, store.errorDashboard, store.uploadSourceMap] })
+        const arr = []
+        for (let [key, value] of Object.entries(store)) {
+            arr.push(value)
+        }
+        console.log(arr)
+        return res.send({
+            menuList: arr,
+        })
     }
     res.send({ menuList: [] })
 })
